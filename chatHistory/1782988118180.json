@@ -1,0 +1,20 @@
+{
+  "id": "1782988118180",
+  "title": "please explain what is Rag??",
+  "createdAt": "2026-07-02T10:28:38.180Z",
+  "updatedAt": "2026-07-02T10:30:19.822Z",
+  "messages": [
+    {
+      "role": "assistant",
+      "content": "Hello! I am Zia AI. How can I help you today?"
+    },
+    {
+      "role": "user",
+      "content": "please explain what is Rag??"
+    },
+    {
+      "role": "assistant",
+      "content": "RAG stands for **Retrieval-Augmented Generation**. It's a technique used with Large Language Models (LLMs) that combines two powerful components:\n\n## How RAG Works\n\n1. **Retrieval**: The system searches through an external knowledge base or document collection to find relevant information related to the user's query.\n2. **Augmentation**: This retrieved context is added to the input prompt along with the original question.\n3. **Generation**: The LLM generates a response based on both its internal training and the newly provided contextual information.\n\n## Why Use RAG?\n\n- ✅ **Reduces hallucinations** - Models answer from actual documents rather than making things up\n- ✅ **Keeps knowledge current** - Can access real-time or updated data without retraining models\n- ✅ **Domain-specific accuracy** - Works well for specialized fields like law, medicine, finance\n- ✅ **Cost-effective** - No need to fine-tune the entire model\n\n## Simple Example\n\n```\nUser asks: \"What are our company's return policies?\"\n\nRAG Process:\n1. Retrieves relevant policy documents from database\n2. Feeds question + retrieved text into LLM\n3. Model generates answer based on actual policy docs\n   (not training data)\n```\n\nWould you like me to show you how RAG is implemented in code, or do you have questions about a specific aspect?"
+    }
+  ]
+}

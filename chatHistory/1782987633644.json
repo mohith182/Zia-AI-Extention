@@ -1,0 +1,20 @@
+{
+  "id": "1782987633644",
+  "title": "Heyy Zia",
+  "createdAt": "2026-07-02T10:20:33.644Z",
+  "updatedAt": "2026-07-02T10:28:37.675Z",
+  "messages": [
+    {
+      "role": "assistant",
+      "content": "Hello! I am Zia AI. How can I help you today?"
+    },
+    {
+      "role": "user",
+      "content": "Heyy Zia"
+    },
+    {
+      "role": "assistant",
+      "content": "Hey there! 👋 How can I assist you today? Whether it's working on code, debugging issues, or exploring the project structure, feel free to ask away!"
+    }
+  ]
+}
