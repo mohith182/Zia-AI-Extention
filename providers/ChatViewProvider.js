@@ -101,6 +101,12 @@ webviewView.webview.onDidReceiveMessage(
     this._updateWebviewState();
     break;
 
+    case 'forkMessage':
+    console.log("Fork message:", data.index);
+    await this.chatHistory.forkMessage(data.index);
+    this._updateWebviewState();
+    break;
+
             case 'log':
                 this._log(
                     `[Webview] ${data.value}`,
@@ -402,7 +408,33 @@ cursor:pointer;
             animation: fadeIn 0.3s ease-out;
             word-wrap: break-word;
         }
+.fork-message-btn{
 
+    margin-top:8px;
+
+    align-self:flex-end;
+
+    padding:4px 10px;
+
+    border:none;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:12px;
+
+    background:var(--vscode-button-secondaryBackground);
+
+    color:var(--vscode-button-secondaryForeground);
+
+}
+
+.fork-message-btn:hover{
+
+    background:var(--vscode-button-secondaryHoverBackground);
+
+}
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -598,8 +630,8 @@ cursor:pointer;
             </div>
 
         </div>
-
-       <div id="chat-menu" class="hidden">
+     
+   <div id="chat-menu" class="hidden">
 
     <div class="menu-item" id="new-chat-btn">
         + New Chat
@@ -656,8 +688,10 @@ cursor:pointer;
         const statusEl = document.getElementById('status-indicator');
         const historyContainer = document.getElementById('chat-history');
         const newChatBtn = document.getElementById('new-chat-btn');
+       
         const menuBtn = document.getElementById('menu-btn');
-const chatMenu = document.getElementById('chat-menu');
+        const chatMenu = document.getElementById('chat-menu');
+
 menuBtn.onclick = () => { 
     chatMenu.classList.toggle('show'); 
 };
@@ -691,17 +725,59 @@ function render(state) {
             }
 
             // Render messages
-            container.innerHTML = state.messages.map(m => \`
-                <div class="message \${m.role}">
-                    <div class="role-label">\${m.role}</div>
-                    <div class="content">\${formatText(m.content)}</div>
-                </div>
-            \`).join('');
+// Render messages
 
-            container.scrollTop = container.scrollHeight;
-            
-            input.disabled = state.isSending;
-            sendBtn.disabled = state.isSending || !input.value.trim();
+let html = "";
+
+state.messages.forEach((m, index) => {
+
+    html += '<div class="message ' + m.role + '">';
+
+    html += '<div class="role-label">' + m.role + '</div>';
+
+    html += '<div class="content">';
+    html += formatText(m.content);
+    html += '</div>';
+
+    // Show Fork only for assistant messages
+    if (m.role === "assistant") {
+
+        html +=
+            '<button class="fork-message-btn" data-index="' +
+            index +
+            '">Fork</button>';
+
+    }
+
+    html += '</div>';
+
+});
+
+container.innerHTML = html;
+
+// Attach click listeners
+document.querySelectorAll(".fork-message-btn").forEach(btn => {
+
+    btn.onclick = () => {
+
+        vscode.postMessage({
+
+            type: "forkMessage",
+
+            index: Number(btn.dataset.index)
+
+        });
+
+    };
+
+});
+
+container.scrollTop = container.scrollHeight;
+
+input.disabled = state.isSending;
+sendBtn.disabled = state.isSending || !input.value.trim();
+
+
         }
 
         function formatText(text) {
@@ -824,7 +900,7 @@ historyContainer.appendChild(item);
 
     chatMenu.classList.remove('show');
 
-});
+});  
 
      let streamingContent = '';
      window.addEventListener('message', (event) => {

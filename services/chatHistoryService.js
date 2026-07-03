@@ -4,6 +4,7 @@ const path = require('path');
 const zlib = require('zlib');
 const { promisify } = require('util');
 
+
 const gzip = promisify(zlib.gzip);
 const gunzip = promisify(zlib.gunzip);
 class ChatHistoryService {
@@ -187,7 +188,36 @@ async clearCurrentChat() {
     await this.save();
 }
 
+async forkMessage(messageIndex) {
 
+    const chat = this.getCurrentChat();
+
+    if (!chat) {
+        return null;
+    }
+
+    const forkedChat = {
+        id: Date.now().toString(),
+        title: `${chat.title} (Fork)`,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+
+        // Copy only messages up to the selected one
+        messages: JSON.parse(
+            JSON.stringify(
+                chat.messages.slice(0, messageIndex + 1)
+            )
+        )
+    };
+
+    this.chats.push(forkedChat);
+
+    this.currentChatId = forkedChat.id;
+
+    await this.save();
+
+    return forkedChat;
+}
 
     getCurrentMessages() {
         const chat = this.getCurrentChat();
