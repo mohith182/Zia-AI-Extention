@@ -158,8 +158,10 @@ class AgentService {
                 if (!args.command) {
                     return { error: 'command is required' };
                 }
-                return await runCommandTool(args.command);
-            }
+                return await runCommandTool(args.command,{
+                    cwd: this.workspaceRoot
+                });
+            } 
             if (toolName === 'write_file') {
     if (!args.relativePath) {
         return { error: 'relativePath is required' };
