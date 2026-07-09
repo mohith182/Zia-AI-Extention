@@ -728,54 +728,36 @@ cursor:pointer;
 #mention-popup{
 
     position:absolute;
-
     left:8px;
-
     bottom:55px;
-
     width:300px;
-
     max-height:220px;
-
     overflow-y:auto;
-
     display:none;
-
     background:var(--panel-bg);
-
     border:1px solid var(--border-color);
-
     border-radius:8px;
-
     box-shadow:0 6px 18px rgba(0,0,0,.4);
-
     z-index:9999;
 
 }
 
 .mention-item{
-
     padding:8px 12px;
-
     cursor:pointer;
-
 }
 
 .mention-item:hover{
-
     background:var(--btn-hover);
 
 }
 
 .mention-item.active{
-
     background:var(--btn-bg);
-
 }
         .textarea-wrapper:focus-within {
             border-color: var(--vscode-focusBorder);
         }
-
         textarea {
             width: 100%;
             min-height: 44px;
@@ -831,7 +813,6 @@ cursor:pointer;
         }
 
         #clear-btn:hover { background: rgba(255,255,255,0.05); }
-
         /* Spinner for thinking state */
         .spinner {
             width: 12px;
@@ -854,33 +835,22 @@ cursor:pointer;
 <body>
 
 <div id="layout">
-
     <div id="main">
-
         <div id="chat-header">
-
-            <span>CHAT</span>
-
+        <span>CHAT</span>
       <div class="header-buttons">
-
     <button id="export-btn" title="Export Chat">
         ⤓
     </button>
-
     <button id="menu-btn" title="Menu">
         +
     </button>
-
 </div>
-
         </div>
-     
    <div id="chat-menu" class="hidden">
-
     <div class="menu-item" id="new-chat-btn">
         + New Chat
     </div>
-
     <hr>
 <div class="search-container">
     <input
@@ -890,14 +860,9 @@ cursor:pointer;
     />
 </div>
     <div id="chat-history"></div>
-
 </div>
-
         <div id="chat-container"></div>
-
-
         <div id="input-panel">
-
 <div class="textarea-wrapper">
 
     <textarea
@@ -910,31 +875,22 @@ cursor:pointer;
 
 </div>
             <div class="controls">
-
                 <div id="status-indicator"></div>
-
  <div class="button-group">
-
     <button id="clear-btn">
         Clear
     </button>
-
     <button id="send-btn">
         Send
     </button>
-
 </div>
 
             </div>
-
         </div>
-
     </div>
-
 </div>
     <script src="${markedUri}"></script>
     <script nonce="${nonce}">
-
         const vscode = acquireVsCodeApi(); 
         const container = document.getElementById('chat-container');
         const input = document.getElementById('prompt-input');
@@ -989,90 +945,58 @@ let html = "";
 state.messages.forEach((m, index) => {
 
     html += '<div class="message ' + m.role + '">';
-
     html += '<div class="role-label">' + m.role + '</div>';
-
     html += '<div class="content">';
     html += formatText(m.content);
     html += '</div>';
 
     // Show Fork only for assistant messages
     if (m.role === "assistant") {
-
         html +=
             '<button class="fork-message-btn" data-index="' +
             index +
             '">Fork</button>';
 
     }
-
     html += '</div>';
-
 });
 
 container.innerHTML = html;
-
 // Attach click listeners
 document.querySelectorAll(".fork-message-btn").forEach(btn => {
-
     btn.onclick = () => {
-
         vscode.postMessage({
-
             type: "forkMessage",
-
             index: Number(btn.dataset.index)
-
         });
-
     };
-
 });
-
 container.scrollTop = container.scrollHeight;
-
 input.disabled = state.isSending;
 sendBtn.disabled = state.isSending || !input.value.trim();
-
-
         }
-
         function formatText(text) {
     if (!text) return '';
-
     return marked.parse(text, {
         gfm: true,
         breaks: true
     });
 }
-
 function renderMentionPopup() {
-
     mentionPopup.innerHTML = "";
-
     if (filteredFiles.length === 0) {
-
         mentionPopup.style.display = "none";
         return;
-
     }
-
     mentionPopup.style.display = "block";
-
     filteredFiles.forEach((file, index) => {
-
         const item = document.createElement("div");
-
         item.className = "mention-item";
-
         if (index === selectedMention) {
             item.classList.add("active");
         }
-
         item.textContent = file.name;
-
         item.onclick = () => {
-
             input.value =
                 input.value.replace(
                     /@([^\s]*)$/,
@@ -1084,19 +1008,13 @@ function renderMentionPopup() {
             input.focus();
 
         };
-
         mentionPopup.appendChild(item);
-
     });
-
 }
 
        function handleSend() {
-
     console.log('SEND CLICKED');
-
     const value = input.value.trim();
-
     if (value && !currentState.isSending) {
          streamingContent = '';
         console.log('MESSAGE:', value);
@@ -1136,12 +1054,12 @@ function renderHistory(state) {
         rename.textContent = "✎";
 
        rename.onclick = (e) => {
-    e.stopPropagation();
-console.log("Rename button clicked");
-    vscode.postMessage({
-        type: "renameChat",
-        id: chat.id
-    });
+        e.stopPropagation();
+        console.log("Rename button clicked");
+        vscode.postMessage({
+            type: "renameChat",
+            id: chat.id
+        });
 
     chatMenu.classList.remove("show");
 };
@@ -1153,15 +1071,12 @@ console.log("Rename button clicked");
 
         del.onclick = (e) => {
             e.stopPropagation();
-
             vscode.postMessage({
                 type: "deleteChat",
                 id: chat.id
             });
-
             chatMenu.classList.remove("show");
         };
-
         // Load chat
         item.onclick = () => {
             vscode.postMessage({
@@ -1189,42 +1104,35 @@ console.log("Rename button clicked");
         wrapper.appendChild(actions);
 
         item.appendChild(wrapper);
-
         historyContainer.appendChild(item);
 
     });
 
 }
         // Event Listeners
-       input.addEventListener("input", () => {
-
+    input.addEventListener("input", () => {
     input.style.height = "auto";
     input.style.height =
-        Math.min(input.scrollHeight, 200) + "px";
+    Math.min(input.scrollHeight, 200) + "px";
 
     sendBtn.disabled =
         currentState.isSending ||
         !input.value.trim();
 
     const text = input.value;
-
     const match = text.match(/@([^\s]*)$/);
 
     if (!match) {
-
         mentionPopup.style.display = "none";
         return;
-
     }
 
     const query = match[1].toLowerCase();
-
     filteredFiles = workspaceFiles.filter(file =>
         file.name.toLowerCase().includes(query)
     );
 
     selectedMention = 0;
-
     renderMentionPopup();
 
 });
